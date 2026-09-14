@@ -364,34 +364,35 @@
         zoomToBbox([minLon, minLat, maxLon, maxLat], 0.12);
       });
 
-      // Carga automática de archivos GPX desde la carpeta gpx/ del proyecto
+      // Carga automática de archivos GPX desde el JSON estático de la carpeta gpx/
       function loadRoutesFromFolder(folderUrl) {
-        fetch(folderUrl)
+        fetch('gpx/routes.json')
           .then(response => {
             if (!response.ok) {
-              throw new Error('No se puede acceder a la carpeta de rutas GPX.');
+              throw new Error('No se puede acceder al archivo routes.json.');
             }
-            return response.text();
+            return response.json();
           })
-          .then(html => {
-            const doc = new DOMParser().parseFromString(html, 'text/html');
-            const links = Array.from(doc.querySelectorAll('a.file.gpx'));
-            const gpxFiles = links
-              .map(link => link.getAttribute('href'))
-              .filter(Boolean)
-              .map(href => href.replace(/\\/g, '/'))
-              .map(href => href.startsWith('http') ? href : new URL(href, window.location.origin + '/' + folderUrl).toString());
-
-            if (!gpxFiles.length) {
+          .then(gpxFiles => {
+            if (!Array.isArray(gpxFiles) || !gpxFiles.length) {
               routeList.innerHTML = '<div class="empty">No hay rutas GPX en la carpeta gpx/.</div>';
               return;
             }
 
-            const requests = gpxFiles.map(gpxFile => fetch(gpxFile).then(res => res.text()));
+            const requests = gpxFiles.map(file => {
+              const fileUrl = folderUrl + file;
+              return fetch(fileUrl).then(res => {
+                if (!res.ok) {
+                  throw new Error('No se pudo cargar ' + fileUrl);
+                }
+                return res.text();
+              });
+            });
+
             Promise.all(requests)
               .then(texts => {
                 texts.forEach((text, index) => {
-                  const filename = gpxFiles[index].split('/').pop() || 'ruta.gpx';
+                  const filename = gpxFiles[index] || 'ruta.gpx';
                   const parsed = parseGPX(text, filename.replace(/\.gpx$/i, ''));
                   if (!parsed) return;
 
@@ -424,11 +425,11 @@
           })
           .catch(error => {
             console.error(error);
-            routeList.innerHTML = '<div class="empty">No se encontró la carpeta gpx/.</div>';
+            routeList.innerHTML = '<div class="empty">No se encontró el archivo routes.json.</div>';
           });
       }
 
-      // Inicio de la aplicación: mapa + carga de rutas desde gpx/
+      // Inicio de la aplicación: mapa + carga de rutas desde el JSON estático
       window.addEventListener('load', function () {
         initMap();
         loadRoutesFromFolder('gpx/');
