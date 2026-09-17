@@ -11,24 +11,10 @@
 
       // Inicialización del mapa base
       function initMap() {
-        const baseLayer = new M.layer.WMTS({
-          url: 'https://www.ign.es/wmts/ign-base?',
-          name: 'IGNBaseTodo',
-          legend: 'Mapa IGN',
-          matrixSet: 'GoogleMapsCompatible',
-          transparent: false,
-          displayInLayerSwitcher: false,
-          queryable: false,
-          visible: true,
-          format: 'image/jpeg',
-        });
-
-        map = M.map({
+        map = window.mapjs || IDEE.map({
           container: 'mapjs',
-          projection: 'EPSG:4326*',
           center: [-3.7038, 40.4168],
           zoom: 6,
-          layers: [baseLayer],
         });
       }
 
@@ -113,9 +99,12 @@
       // Añade la capa de ruta al mapa basado en GeoJSON
       function addRouteLayer(route) {
         const geojson = segmentsToGeoJSON(route.segments);
-        const style = new M.style.Line({ stroke: { color: route.color, width: 4 } });
-        const layer = new M.layer.GeoJSON({ name: route.id, legend: route.name, source: geojson }, { style: style, displayInLayerSwitcher: false });
+        const style = new IDEE.style.Line({ stroke: { color: route.color, width: 4 } });
+        const layer = new IDEE.layer.GeoJSON({ name: route.id, legend: route.name, source: geojson }, { style: style, displayInLayerSwitcher: false });
         map.addLayers(layer);
+        if (layer.impl_ && layer.impl_.olLayer && typeof layer.impl_.olLayer.setZIndex === 'function') {
+          layer.impl_.olLayer.setZIndex(1000);
+        }
         route.layer = layer;
       }
 
@@ -131,7 +120,19 @@
         minLat -= h * p;
         maxLat += h * p;
 
-        map.setBbox([minLon, minLat, maxLon, maxLat]);
+        const geographicBbox = [minLon, minLat, maxLon, maxLat];
+        const mapProjection = typeof map.getProjection === 'function' ? map.getProjection() : null;
+        const projectionCode = typeof mapProjection === 'string'
+          ? mapProjection
+          : mapProjection && typeof mapProjection.getCode === 'function'
+            ? mapProjection.getCode()
+            : mapProjection && mapProjection.code;
+        const targetProjection = projectionCode || 'EPSG:3857';
+        const mapBbox = window.ol && ol.proj && targetProjection !== 'EPSG:4326'
+          ? ol.proj.transformExtent(geographicBbox, 'EPSG:4326', targetProjection)
+          : geographicBbox;
+
+        map.setBbox(mapBbox);
       }
 
       // Elemento DOM donde se dibuja la lista de rutas

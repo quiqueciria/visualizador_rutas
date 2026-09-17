@@ -5,15 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Visor de rutas GPX</title>
 
-  <link type="text/css" rel="stylesheet" href="https://componentes.idee.es/api-idee/assets/css/apiidee.ol.min.css">
+  <link type="text/css" rel="stylesheet" href="https://componentes-beta.idee.es/api-idee/assets/css/apiidee.ol.min.css">
 
   <link type="text/css" rel="stylesheet" href="assets/css/styles.css">
 
-  <script type="text/javascript" src="https://componentes.idee.es/api-idee/vendor/browser-polyfill.js"></script>
-  <script type="text/javascript" src="https://componentes.idee.es/api-idee/js/apiidee.ol.min.js"></script>
-  <script type="text/javascript" src="https://componentes.idee.es/api-idee/js/configuration.js"></script>
+  <script type="text/javascript" src="https://componentes-beta.idee.es/api-idee/vendor/browser-polyfill.js"></script>
+  <script type="text/javascript" src="https://componentes-beta.idee.es/api-idee/js/apiidee.ol.min.js"></script>
+  <script type="text/javascript" src="https://componentes-beta.idee.es/api-idee/js/configuration.js"></script>
 
- 
+     <!-- backimglayer plugin -->
+    <link href="https://componentes-beta.idee.es/api-idee/plugins/backimglayer/backimglayer.ol.min.css"
+        rel="stylesheet" />
+    <script type="text/javascript"
+        src="https://componentes-beta.idee.es/api-idee/plugins/backimglayer/backimglayer.ol.min.js"></script>
+
+
+
 </head>
 <body>
   <!-- Botón para abrir/cerrar el panel en móvil -->
@@ -37,6 +44,114 @@
     <!-- Mapa de la derecha -->
     <div id="mapjs" class="m-container"></div>
   </div>
+
+      <script type="text/javascript">
+        window.mapjs = IDEE.map({
+            container: 'mapjs',
+            controls: [],
+        });
+
+        // BackImgLayer PLUGIN (descomentar para usar)
+                  const backImgLayer = new IDEE.plugin.BackImgLayer({
+                  order: 0,
+                    layerOpts: [{
+                        id: 'mapa',
+                        title: 'Mapa',
+                        preview: 'https://www.ign.es/iberpix/img/raster.png', // ruta relativa, edite por la deseada
+                        layers: [new IDEE.layer.WMTS({
+                            url: 'http://www.ign.es/wmts/ign-base?',
+                            name: 'IGNBaseTodo',
+                            legend: 'Callejero',
+                            matrixSet: 'GoogleMapsCompatible',
+                            isBase: true,
+                            displayInLayerSwitcher: false,
+                            queryable: false,
+                            visible: true,
+                            format: 'image/jpeg',
+                        })],
+                    },
+                    {
+                      id: 'openstreetmap',
+                      title: 'OpenStreetMap',
+                      preview: 'https://tile.openstreetmap.org/6/31/24.png',
+                      layers: [new IDEE.layer.XYZ({
+                        url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        name: 'OpenStreetMap',
+                        legend: 'OpenStreetMap',
+                        projection: 'EPSG:3857',
+                            attributions: '© OpenStreetMap contributors',
+                        isBase: true,
+                        displayInLayerSwitcher: false,
+                        queryable: false,
+                        visible: true,
+                        maxZoom: 19,
+                      })],
+                    },
+                    {
+                        id: 'Imagen',
+                        title: 'Imagen',
+                        preview: 'https://www.ign.es/iberpix/img/image.png', // URL de previsualización oficial [cite: 67]
+                        layers: [
+                            new IDEE.layer.XYZ({
+                                url: 'https://tms-pnoa.idee.es/1.0.0/pnoa/{z}/{x}/{-y}.jpeg',
+                                name: 'PNOA',
+                                legend: 'Ortofoto',
+                                projection: 'EPSG:3857',
+                                isBase: true,
+                                displayInLayerSwitcher: false,
+                                queryable: false,
+                                visible: true,
+                                maxZoom: 19
+                            }),
+                            new IDEE.layer.WMTS({
+                                url: 'https://www.ign.es/wmts/pnoa?',
+                                name: 'OI.OrthoimageCoverage',
+                                matrixSet: 'GoogleMapsCompatible',
+                                legend: 'Ortofoto',
+                                isBase: false,
+                                displayInLayerSwitcher: false,
+                                queryable: false,
+                                visible: true,
+                                format: 'image/jpeg',
+                                minZoom: 19
+                            })
+                        ]
+                    }, 
+                    {
+                            id: 'hibrido',
+                            title: 'Híbrido',
+                            preview: 'https://www.ign.es/iberpix/img/hibrido.png', // ruta relativa, edite por la deseada
+                            layers: [new IDEE.layer.WMTS({
+                                    url: 'http://www.ign.es/wmts/pnoa-ma?',
+                                    name: 'OI.OrthoimageCoverage',
+                                    legend: 'Imagen (PNOA)',
+                                    matrixSet: 'GoogleMapsCompatible',
+                                    isBase: false,
+                                    displayInLayerSwitcher: false,
+                                    queryable: false,
+                                    visible: true,
+                                    format: 'image/png',
+                                }),
+                                new IDEE.layer.WMTS({
+                                    url: 'http://www.ign.es/wmts/ign-base?',
+                                    name: 'IGNBaseOrto',
+                                    matrixSet: 'GoogleMapsCompatible',
+                                    legend: 'Mapa IGN',
+                                    isBase: true,
+                                    displayInLayerSwitcher: false,
+                                    queryable: false,
+                                    visible: true,
+                                    format: 'image/png',
+                                })
+                            ],
+                        },
+                    ]
+                  });
+
+
+                  mapjs.addPlugin(backImgLayer);
+    
+</script>
 
   <script type="text/javascript" src="assets/js/scripts.js"></script>
 
