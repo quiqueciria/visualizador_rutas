@@ -49,15 +49,34 @@
         window.mapjs = IDEE.map({
             container: 'mapjs',
             controls: [],
+          center: [-412305.13, 4926696.67],
+          zoom: 7,
         });
 
         // BackImgLayer PLUGIN (descomentar para usar)
                   const backImgLayer = new IDEE.plugin.BackImgLayer({
                   order: 0,
-                    layerOpts: [{
+                    layerOpts: [
+                    {
+                        id: 'MapaRaster',
+                        title: 'Cartografía Ráster de España del IGN',
+                        preview: 'https://www.ign.es/iberpix/img/raster.png',
+                        layers: [new IDEE.layer.WMTS({
+                        url: 'https://www.ign.es/wmts/mapa-raster?',
+                        name: 'MTN',
+                        legend: 'Cartografía Ráster de España del IGN',
+                                matrixSet: 'GoogleMapsCompatible',
+                                isBase: true,
+                                displayInLayerSwitcher: false,
+                                queryable: false,
+                                visible: true,
+                                format: 'image/jpeg',
+                            })],
+                    },
+                    {
                         id: 'mapa',
                         title: 'Mapa',
-                        preview: 'https://www.ign.es/iberpix/img/raster.png', // ruta relativa, edite por la deseada
+                        preview: 'https://www.ign.es/iberpix/img/mapa.png', // ruta relativa, edite por la deseada
                         layers: [new IDEE.layer.WMTS({
                             url: 'http://www.ign.es/wmts/ign-base?',
                             name: 'IGNBaseTodo',
@@ -134,7 +153,7 @@
                                 }),
                                 new IDEE.layer.WMTS({
                                     url: 'http://www.ign.es/wmts/ign-base?',
-                                    name: 'IGNBaseOrto',
+                                    name: 'IGNBaseTodo',
                                     matrixSet: 'GoogleMapsCompatible',
                                     legend: 'Mapa IGN',
                                     isBase: true,

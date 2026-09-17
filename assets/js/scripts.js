@@ -13,7 +13,7 @@
       function initMap() {
         map = window.mapjs || IDEE.map({
           container: 'mapjs',
-          center: [-3.7038, 40.4168],
+          center: [-412305.13, 4926696.67], // Madrid en EPSG:3857
           zoom: 6,
         });
       }
@@ -132,7 +132,18 @@
           ? ol.proj.transformExtent(geographicBbox, 'EPSG:4326', targetProjection)
           : geographicBbox;
 
-        map.setBbox(mapBbox);
+        if (typeof map.updateSize === 'function') map.updateSize();
+
+        const mapImpl = map.impl_ && map.impl_.map_
+          ? map.impl_.map_
+          : typeof map.getMapImpl === 'function' ? map.getMapImpl() : null;
+        const view = mapImpl && typeof mapImpl.getView === 'function' ? mapImpl.getView() : null;
+
+        if (view && typeof view.fit === 'function') {
+          view.fit(mapBbox, { padding: [40, 40, 40, 40], duration: 400 });
+        } else if (typeof map.setBbox === 'function') {
+          map.setBbox(geographicBbox);
+        }
       }
 
       // Elemento DOM donde se dibuja la lista de rutas
@@ -254,11 +265,6 @@
                 });
 
                 renderList();
-
-                if (routes.size === 1) {
-                  const firstRoute = Array.from(routes.values())[0];
-                  zoomToBbox(firstRoute.stats.bbox, 0.25);
-                }
               })
               .catch(error => {
                 console.error(error);
