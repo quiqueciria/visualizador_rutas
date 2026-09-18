@@ -53,10 +53,10 @@
     <div id="mapjs" class="m-container"></div>
   </div>
 
-      <script type="text/javascript">
+  <script type="text/javascript">
         window.mapjs = IDEE.map({
             container: 'mapjs',
-            controls: [],
+            controls: ['attributions', 'location*true*false',],
           center: [-412305.13, 4926696.67],
           zoom: 7,
         });
@@ -79,22 +79,22 @@
                                 queryable: false,
                                 visible: true,
                                 format: 'image/jpeg',
-                            })],
+                        })],
                     },
                     {
                         id: 'mapa',
-                        title: 'Mapa',
+                        title: 'Callejero de España del IGN',
                         preview: 'https://www.ign.es/iberpix/img/mapa.png', // ruta relativa, edite por la deseada
                         layers: [new IDEE.layer.WMTS({
-                            url: 'http://www.ign.es/wmts/ign-base?',
-                            name: 'IGNBaseTodo',
-                            legend: 'Callejero',
-                            matrixSet: 'GoogleMapsCompatible',
-                            isBase: true,
-                            displayInLayerSwitcher: false,
-                            queryable: false,
-                            visible: true,
-                            format: 'image/jpeg',
+                                url: 'http://www.ign.es/wmts/ign-base?',
+                                name: 'IGNBaseTodo',
+                                legend: 'Callejero',
+                                matrixSet: 'GoogleMapsCompatible',
+                                isBase: true,
+                                displayInLayerSwitcher: false,
+                                queryable: false,
+                                visible: true,
+                                format: 'image/jpeg',
                         })],
                     },
                     {
@@ -102,16 +102,16 @@
                       title: 'OpenStreetMap',
                       preview: 'https://tile.openstreetmap.org/6/31/24.png',
                       layers: [new IDEE.layer.XYZ({
-                        url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                        name: 'OpenStreetMap',
-                        legend: 'OpenStreetMap',
-                        projection: 'EPSG:3857',
-                            attributions: '© OpenStreetMap contributors',
-                        isBase: true,
-                        displayInLayerSwitcher: false,
-                        queryable: false,
-                        visible: true,
-                        maxZoom: 19,
+                                url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                name: 'OpenStreetMap',
+                                legend: 'OpenStreetMap',
+                                projection: 'EPSG:3857',
+                                attributions: '© OpenStreetMap contributors',
+                                isBase: true,
+                                displayInLayerSwitcher: false,
+                                queryable: false,
+                                visible: true,
+                                maxZoom: 19,
                       })],
                     },
                     {
@@ -120,7 +120,7 @@
                         preview: 'https://www.ign.es/iberpix/img/image.png', // URL de previsualización oficial [cite: 67]
                         layers: [
                             new IDEE.layer.XYZ({
-                                url: 'https://tms-pnoa.idee.es/1.0.0/pnoa/{z}/{x}/{-y}.jpeg',
+                                url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
                                 name: 'PNOA',
                                 legend: 'Ortofoto',
                                 projection: 'EPSG:3857',
@@ -131,7 +131,7 @@
                                 maxZoom: 19
                             }),
                             new IDEE.layer.WMTS({
-                                url: 'https://www.ign.es/wmts/pnoa?',
+                                url: 'https://www.ign.es/wmts/pnoa-ma?',
                                 name: 'OI.OrthoimageCoverage',
                                 matrixSet: 'GoogleMapsCompatible',
                                 legend: 'Ortofoto',
@@ -148,27 +148,28 @@
                             id: 'hibrido',
                             title: 'Híbrido',
                             preview: 'https://www.ign.es/iberpix/img/hibrido.png', // ruta relativa, edite por la deseada
-                            layers: [new IDEE.layer.WMTS({
-                                    url: 'http://www.ign.es/wmts/pnoa-ma?',
-                                    name: 'OI.OrthoimageCoverage',
-                                    legend: 'Imagen (PNOA)',
-                                    matrixSet: 'GoogleMapsCompatible',
-                                    isBase: false,
-                                    displayInLayerSwitcher: false,
-                                    queryable: false,
-                                    visible: true,
-                                    format: 'image/png',
-                                }),
+                            layers: [
+                                new IDEE.layer.XYZ({
+                                url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+                                name: 'PNOA-MA',
+                                legend: 'Imagen (PNOA)',
+                                projection: 'EPSG:3857',
+                                isBase: true,
+                                displayInLayerSwitcher: false,
+                                queryable: false,
+                                visible: true,
+                                tileGridMaxZoom: 19,
+                          }),
                                 new IDEE.layer.WMTS({
-                                    url: 'http://www.ign.es/wmts/ign-base?',
-                                    name: 'IGNBaseTodo',
-                                    matrixSet: 'GoogleMapsCompatible',
-                                    legend: 'Mapa IGN',
-                                    isBase: true,
-                                    displayInLayerSwitcher: false,
-                                    queryable: false,
-                                    visible: true,
-                                    format: 'image/png',
+                                url: 'https://www.ign.es/wmts/ign-base?',
+                                name: 'IGNBaseOrto',
+                                matrixSet: 'GoogleMapsCompatible',
+                                legend: 'Topónimos',
+                                isBase: false,
+                                displayInLayerSwitcher: false,
+                                queryable: true,
+                                visible: true,
+                                format: 'image/png',
                                 })
                             ],
                         },
