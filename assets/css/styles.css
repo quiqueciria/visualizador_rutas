@@ -59,6 +59,26 @@
       background: #173f5f;
     }
 
+    .map-filter {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      color: #244b70;
+    }
+
+    .map-filter select {
+      width: 100%;
+      border: 1px solid #ccd8e5;
+      border-radius: 6px;
+      background: #f9fbfd;
+      color: #1f2a37;
+      padding: 8px 10px;
+      font: inherit;
+      cursor: pointer;
+    }
+
     /* Toggle para abrir/cerrar el sidebar */
     #sidebarToggle {
       position: fixed;

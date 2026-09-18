@@ -1,5 +1,8 @@
 
     (function () {
+      // ================================================================
+      // 1. CONFIGURACION Y ESTADO DE LA APLICACION
+      // ================================================================
       // Paleta de colores para cada nueva ruta
       const PALETTE = ['#e8542b', '#3b9c4b', '#3b82c4', '#c94f9e', '#e0a72b', '#4fb8a8', '#8b5fbf', '#c4443b'];
       // Colección de rutas guardadas
@@ -8,8 +11,12 @@
       let routeCounter = 0;
       // Instancia del mapa
       let map;
+      let grayscaleMap = false;
+      const ROUTE_LAYER_Z_INDEX = 1000;
 
-      // Inicialización del mapa base
+      // ================================================================
+      // 2. INICIALIZACION DEL MAPA
+      // ================================================================
       function initMap() {
         map = window.mapjs || IDEE.map({
           container: 'mapjs',
@@ -18,6 +25,39 @@
         });
       }
 
+      // ================================================================
+      // 3. FILTRO VISUAL DE LAS CAPAS BASE
+      // ================================================================
+      // Filtra solo las capas de fondo; las rutas se dibujan después con sus colores.
+      function configureLayerFilter(layer) {
+        if (layer.getZIndex() >= ROUTE_LAYER_Z_INDEX || layer.__mapFilterConfigured) return;
+
+        layer.on('prerender', event => {
+          if (grayscaleMap && layer.getZIndex() < ROUTE_LAYER_Z_INDEX && event.context) {
+            event.context.filter = 'grayscale(1)';
+          }
+        });
+        layer.on('postrender', event => {
+          if (event.context) event.context.filter = 'none';
+        });
+        layer.__mapFilterConfigured = true;
+      }
+
+      function configureMapFilter() {
+        const mapImpl = map.impl_ && map.impl_.map_;
+        const layerCollection = mapImpl && mapImpl.getLayers ? mapImpl.getLayers() : null;
+        if (!layerCollection) return;
+
+        layerCollection.getArray().forEach(configureLayerFilter);
+        if (!layerCollection.__mapFilterListenerConfigured) {
+          layerCollection.on('add', event => configureLayerFilter(event.element));
+          layerCollection.__mapFilterListenerConfigured = true;
+        }
+      }
+
+      // ================================================================
+      // 4. LECTURA Y PARSEO DE ARCHIVOS GPX
+      // ================================================================
       // Parseo del archivo GPX para extraer tramos y puntos
       function parseGPX(text, fallbackName) {
         const xml = new DOMParser().parseFromString(text, 'application/xml');
@@ -53,6 +93,9 @@
         return { lat, lon };
       }
 
+      // ================================================================
+      // 5. CALCULOS GEOGRAFICOS Y ESTADISTICAS
+      // ================================================================
       // Distancia entre dos puntos para calcular kilometraje
       function haversine(a, b) {
         const R = 6371000;
@@ -83,6 +126,9 @@
         return { distanceKm: distM / 1000, bbox: [minLon, minLat, maxLon, maxLat] };
       }
 
+      // ================================================================
+      // 6. CONVERSION A GEOJSON Y CREACION DE CAPAS
+      // ================================================================
       // Conversión de los puntos GPX a GeoJSON para la capa de rutas
       function segmentsToGeoJSON(segments) {
         const geometry = segments.length > 1
@@ -108,6 +154,9 @@
         route.layer = layer;
       }
 
+      // ================================================================
+      // 7. NAVEGACION Y AJUSTE DE LA VISTA
+      // ================================================================
       // Ajusta el mapa al recuadro del bbox de una ruta
       function zoomToBbox(bbox, pad) {
         let [minLon, minLat, maxLon, maxLat] = bbox;
@@ -146,9 +195,24 @@
         }
       }
 
+      // ================================================================
+      // 8. REFERENCIAS HTML Y SELECTOR DEL FILTRO
+      // ================================================================
       // Elemento DOM donde se dibuja la lista de rutas
       const routeList = document.getElementById('routeList');
+      const mapFilter = document.getElementById('mapFilter');
 
+      // Cambia el filtro de las capas de fondo sin afectar a las rutas.
+      mapFilter.addEventListener('change', event => {
+        grayscaleMap = event.target.value === 'grayscale';
+        configureMapFilter();
+        const mapImpl = map.impl_ && map.impl_.map_;
+        if (mapImpl && typeof mapImpl.render === 'function') mapImpl.render();
+      });
+
+      // ================================================================
+      // 9. RENDERIZADO Y CONTROLES DE LA LISTA DE RUTAS
+      // ================================================================
       // Dibuja en el panel lateral el listado de rutas cargadas
       function renderList() {
         routeList.innerHTML = '';
@@ -193,6 +257,9 @@
         });
       }
 
+      // ================================================================
+      // 10. BOTON PARA MOSTRAR TODAS LAS RUTAS
+      // ================================================================
       // Botón para ajustar mapa a todas las rutas visibles
       document.getElementById('fitAllBtn').addEventListener('click', () => {
         if (!routes.size) return;
@@ -209,6 +276,9 @@
         zoomToBbox([minLon, minLat, maxLon, maxLat], 0.12);
       });
 
+      // ================================================================
+      // 11. COMPORTAMIENTO DEL MENU MOVIL
+      // ================================================================
       // Botón hamburguesa para abrir/cerrar el sidebar en móvil
       const sidebarToggle = document.getElementById('sidebarToggle');
       const sidebar = document.getElementById('sidebar');
@@ -217,6 +287,9 @@
         sidebar.classList.toggle('open');
       });
 
+      // ================================================================
+      // 12. CARGA AUTOMATICA DE RUTAS DESDE ARCHIVOS
+      // ================================================================
       // Carga automática de archivos GPX desde el JSON estático de la carpeta gpx/
       function loadRoutesFromFolder(folderUrl) {
         fetch('gpx/routes.json')
@@ -277,9 +350,13 @@
           });
       }
 
+      // ================================================================
+      // 13. ARRANQUE DE LA APLICACION
+      // ================================================================
       // Inicio de la aplicación: mapa + carga de rutas desde el JSON estático
       window.addEventListener('load', function () {
         initMap();
+        configureMapFilter();
         loadRoutesFromFolder('gpx/');
       });
     })();
