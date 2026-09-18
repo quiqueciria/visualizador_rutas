@@ -60,23 +60,25 @@
     }
 
     .map-filter {
-      display: grid;
-      gap: 6px;
+      display: block;
+      width: 100%;
       margin-bottom: 12px;
       font-size: 12px;
       font-weight: bold;
       color: #244b70;
-    }
-
-    .map-filter select {
-      width: 100%;
       border: 1px solid #ccd8e5;
       border-radius: 6px;
       background: #f9fbfd;
-      color: #1f2a37;
       padding: 8px 10px;
       font: inherit;
       cursor: pointer;
+      text-align: left;
+    }
+
+    .map-filter[aria-pressed="true"] {
+      background: #e7eef4;
+      color: #173f5f;
+      border-color: #8eabc2;
     }
 
     /* Toggle para abrir/cerrar el sidebar */

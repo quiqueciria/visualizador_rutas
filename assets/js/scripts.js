@@ -202,9 +202,11 @@
       const routeList = document.getElementById('routeList');
       const mapFilter = document.getElementById('mapFilter');
 
-      // Cambia el filtro de las capas de fondo sin afectar a las rutas.
-      mapFilter.addEventListener('change', event => {
-        grayscaleMap = event.target.value === 'grayscale';
+      // Alterna el filtro de las capas de fondo sin afectar a las rutas.
+      mapFilter.addEventListener('click', () => {
+        grayscaleMap = !grayscaleMap;
+        mapFilter.setAttribute('aria-pressed', String(grayscaleMap));
+        mapFilter.textContent = grayscaleMap ? 'Mapa en blanco y negro' : 'Mapa en color';
         configureMapFilter();
         const mapImpl = map.impl_ && map.impl_.map_;
         if (mapImpl && typeof mapImpl.render === 'function') mapImpl.render();
