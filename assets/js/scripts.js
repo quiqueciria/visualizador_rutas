@@ -90,7 +90,9 @@
         const lat = parseFloat(pt.getAttribute('lat'));
         const lon = parseFloat(pt.getAttribute('lon'));
         if (Number.isNaN(lat) || Number.isNaN(lon)) return null;
-        return { lat, lon };
+        const eleEl = pt.querySelector('ele');
+        const ele = eleEl ? parseFloat(eleEl.textContent) : null;
+        return { lat, lon, ele: Number.isNaN(ele) ? null : ele };
       }
 
       // ================================================================
@@ -109,6 +111,7 @@
       // Estadísticas de cada ruta: distancia y bounding box
       function computeStats(segments) {
         let distM = 0;
+        let elevationGain = 0;
         let minLon = Infinity, minLat = Infinity, maxLon = -Infinity, maxLat = -Infinity;
 
         segments.forEach(seg => {
@@ -119,11 +122,21 @@
             minLat = Math.min(minLat, p.lat);
             maxLat = Math.max(maxLat, p.lat);
 
-            if (i > 0) distM += haversine(seg[i - 1], p);
+            if (i > 0) {
+              distM += haversine(seg[i - 1], p);
+              if (p.ele !== null && seg[i - 1].ele !== null) {
+                const diff = p.ele - seg[i - 1].ele;
+                if (diff > 0) elevationGain += diff;
+              }
+            }
           }
         });
 
-        return { distanceKm: distM / 1000, bbox: [minLon, minLat, maxLon, maxLat] };
+        return {
+          distanceKm: distM / 1000,
+          elevationGain: Math.round(elevationGain),
+          bbox: [minLon, minLat, maxLon, maxLat]
+        };
       }
 
       // ================================================================
@@ -266,6 +279,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                 </svg>
                 <span>${route.stats.distanceKm.toFixed(2)} km</span>
+                ${route.stats.elevationGain > 0 ? `<span class="text-slate-400">·</span><span>+${route.stats.elevationGain} m</span>` : ''}
               </div>
 
               <div class="flex items-center gap-1">
