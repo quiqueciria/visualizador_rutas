@@ -44,15 +44,19 @@
     }
 
     #fitAllBtn {
-      width: 100%;
+      flex: 1;
       border: 0;
-      background: #24597a;
+      background: #71a7d3;
       color: white;
-      font-weight: bold;
-      padding: 10px 12px;
-      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 8px 10px;
+      border-radius: 8px;
       cursor: pointer;
-      margin-bottom: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s;
     }
 
     #fitAllBtn:hover {

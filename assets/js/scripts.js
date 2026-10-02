@@ -218,21 +218,21 @@
       const mapFilterText = document.getElementById('mapFilterText');
       const mapFilterToggle = document.getElementById('mapFilterToggle');
 
-      const switchOffIcon = `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="5" width="22" height="14" rx="7" ry="7" class="text-slate-300 fill-slate-100" /><circle cx="8" cy="12" r="3" class="fill-white stroke-slate-400" /></svg>`;
-      const switchOnIcon = `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="5" width="22" height="14" rx="7" ry="7" class="text-sky-600 fill-sky-600" /><circle cx="16" cy="12" r="3" class="fill-white stroke-white" /></svg>`;
+      const switchOffIcon = `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="5" width="22" height="14" rx="7" ry="7" class="text-slate-300 fill-slate-100" /><circle cx="8" cy="12" r="3" class="fill-white stroke-slate-400" /></svg>`;
+      const switchOnIcon = `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="5" width="22" height="14" rx="7" ry="7" class="text-sky-600 fill-sky-600" /><circle cx="16" cy="12" r="3" class="fill-white stroke-white" /></svg>`;
 
       function updateMapFilterUI() {
         mapFilter.setAttribute('aria-pressed', String(grayscaleMap));
         if (mapFilterText) {
-          mapFilterText.textContent = grayscaleMap ? 'Mapa en blanco y negro' : 'Mapa en color';
+          mapFilterText.textContent = grayscaleMap ? 'B/N' : 'Color';
         }
         if (mapFilterToggle) {
           mapFilterToggle.innerHTML = grayscaleMap ? switchOnIcon : switchOffIcon;
         }
         if (grayscaleMap) {
-          mapFilter.className = 'map-filter w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-sky-900 bg-sky-50 hover:bg-sky-100 border border-sky-300 rounded-lg shadow-sm transition-all mb-3 cursor-pointer';
+          mapFilter.className = 'map-filter flex-1 flex items-center justify-between px-2.5 py-2 text-xs font-semibold text-sky-900 bg-sky-50 hover:bg-sky-100 border border-sky-300 rounded-lg shadow-sm transition-all cursor-pointer';
         } else {
-          mapFilter.className = 'map-filter w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg shadow-sm transition-all mb-3 cursor-pointer';
+          mapFilter.className = 'map-filter flex-1 flex items-center justify-between px-2.5 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg shadow-sm transition-all cursor-pointer';
         }
       }
 
