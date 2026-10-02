@@ -122,3 +122,25 @@
       height: 100vh;
       min-width: 400px;
     }
+
+
+       /* ================================================================
+       TEST ESPECÍFICO: BackImgLayer (fondo verde y borde rojo)
+       ================================================================ */
+
+    /* Captura el botón del panel descartando explícitamente locator y attributions */
+    #mapjs .m-panel button,
+    #mapjs .m-panel-btn,
+    #mapjs [class*="panel"] button,
+    #mapjs button:not(.ol-attribution *):not([class*="location"]):not([class*="location"] *) {
+      background-color: #71a7d3 !important;
+      border: 2px solid #fff !important;
+      color: #fff !important;
+    }
+  
+    #mapjs .m-panel button:hover,
+    #mapjs .m-panel-btn:hover,
+    #mapjs [class*="panel"] button:hover,
+    #mapjs button:not(.ol-attribution *):not([class*="location"]):not([class*="location"] *):hover {
+    background-color: #1d5a9e !important;
+  }
