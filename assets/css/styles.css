@@ -58,6 +58,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 6px;
       transition: background-color 0.2s;
     }
 
@@ -151,4 +152,10 @@
     #mapjs [class*="panel"] button:hover,
     #mapjs button:not(.ol-attribution *):not([class*="location"]):not([class*="location"] *):hover {
     background-color: #1d5a9e !important;
+  }
+
+
+  /* Ajustes de estilo para el panel de plugins del backimglayer */
+  .m-plugin-panel-content {
+  padding: 1rem .25rem;
   }
