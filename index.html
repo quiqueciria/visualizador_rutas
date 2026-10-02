@@ -58,6 +58,18 @@
         </button>
       </div>
 
+      <!-- Selector para ordenar rutas -->
+      <div class="flex items-center gap-2 mb-3">
+        <label for="sortRoutes" class="text-xs font-semibold text-slate-500 shrink-0">Ordenar:</label>
+        <select id="sortRoutes" class="w-full text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg px-2 py-1.5 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-1 focus:ring-sky-500 cursor-pointer">
+          <option value="default">📋 Por defecto</option>
+          <option value="dist-desc">📏 Distancia (↓ mayor a menor)</option>
+          <option value="dist-asc">📏 Distancia (↑ menor a mayor)</option>
+          <option value="ele-desc">⛰️ Desnivel (↓ mayor a menor)</option>
+          <option value="ele-asc">⛰️ Desnivel (↑ menor a mayor)</option>
+        </select>
+      </div>
+
       <!-- Lista dinámica de rutas cargadas -->
       <div id="routeList"></div>
     </aside>

@@ -214,6 +214,7 @@
       // Elemento DOM donde se dibuja la lista de rutas
       const routeList = document.getElementById('routeList');
       const mapFilter = document.getElementById('mapFilter');
+      const sortRoutes = document.getElementById('sortRoutes');
 
       const mapFilterText = document.getElementById('mapFilterText');
       const mapFilterToggle = document.getElementById('mapFilterToggle');
@@ -245,6 +246,10 @@
         if (mapImpl && typeof mapImpl.render === 'function') mapImpl.render();
       });
 
+      if (sortRoutes) {
+        sortRoutes.addEventListener('change', renderList);
+      }
+
       // ================================================================
       // 9. RENDERIZADO Y CONTROLES DE LA LISTA DE RUTAS
       // ================================================================
@@ -263,7 +268,20 @@
         const eyeOpenIcon = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>`;
         const eyeClosedIcon = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>`;
 
-        routes.forEach(route => {
+        let sortedRoutes = Array.from(routes.values());
+        const sortBy = sortRoutes ? sortRoutes.value : 'default';
+
+        if (sortBy === 'dist-desc') {
+          sortedRoutes.sort((a, b) => b.stats.distanceKm - a.stats.distanceKm);
+        } else if (sortBy === 'dist-asc') {
+          sortedRoutes.sort((a, b) => a.stats.distanceKm - b.stats.distanceKm);
+        } else if (sortBy === 'ele-desc') {
+          sortedRoutes.sort((a, b) => (b.stats.elevationGain || 0) - (a.stats.elevationGain || 0));
+        } else if (sortBy === 'ele-asc') {
+          sortedRoutes.sort((a, b) => (a.stats.elevationGain || 0) - (b.stats.elevationGain || 0));
+        }
+
+        sortedRoutes.forEach(route => {
           const div = document.createElement('div');
           div.className = `route-item group relative bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all duration-200 p-3 mb-2.5 ${!route.visible ? 'opacity-50' : ''}`;
 
