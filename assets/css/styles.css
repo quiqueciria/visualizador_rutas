@@ -25,9 +25,11 @@
       background: #fff;
       border-right: 1px solid #ccd6e0;
       box-shadow: 2px 0 10px rgba(0, 0, 0, 0.08);
-      padding: 16px 14px;
+      padding: 16px 14px 10px;
       box-sizing: border-box;
-      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
     #sidebar h3 {
@@ -117,7 +119,9 @@
 
     /* Lista de rutas dentro del panel */
     #routeList {
-      margin-top: 12px;
+      flex: 1;
+      overflow-y: auto;
+      margin-top: 4px;
     }
 
     /* Contenedor del mapa derecho */

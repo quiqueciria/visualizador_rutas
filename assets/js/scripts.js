@@ -215,6 +215,10 @@
       const routeList = document.getElementById('routeList');
       const mapFilter = document.getElementById('mapFilter');
       const sortRoutes = document.getElementById('sortRoutes');
+      const aboutBtn = document.getElementById('aboutBtn');
+      const aboutModal = document.getElementById('aboutModal');
+      const closeAboutModal = document.getElementById('closeAboutModal');
+      const closeAboutModalBtn = document.getElementById('closeAboutModalBtn');
 
       const mapFilterText = document.getElementById('mapFilterText');
       const mapFilterToggle = document.getElementById('mapFilterToggle');
@@ -248,6 +252,24 @@
 
       if (sortRoutes) {
         sortRoutes.addEventListener('change', renderList);
+      }
+
+      // Control de apertura y cierre del modal "Acerca de"
+      if (aboutBtn && aboutModal) {
+        const openModal = () => {
+          aboutModal.classList.remove('hidden');
+          aboutModal.classList.add('flex');
+        };
+        const closeModal = () => {
+          aboutModal.classList.add('hidden');
+          aboutModal.classList.remove('flex');
+        };
+
+        aboutBtn.addEventListener('click', openModal);
+        if (closeAboutModal) closeAboutModal.addEventListener('click', closeModal);
+        if (closeAboutModalBtn) closeAboutModalBtn.addEventListener('click', closeModal);
+        aboutModal.addEventListener('click', e => { if (e.target === aboutModal) closeModal(); });
+        window.addEventListener('keydown', e => { if (e.key === 'Escape' && !aboutModal.classList.contains('hidden')) closeModal(); });
       }
 
       // ================================================================
