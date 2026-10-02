@@ -136,68 +136,9 @@
       margin-top: 12px;
     }
 
-    /* Cada ruta mostrada en el listado */
-    .route-item {
-      border: 1px solid #ccd8e5;
-      border-radius: 8px;
-      background: #f9fbfd;
-      padding: 10px;
-      margin-bottom: 10px;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-    }
-
-    .route-head {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: bold;
-      font-size: 13px;
-      color: #253b52;
-      cursor: pointer;
-    }
-
-    .route-head input {
-      transform: scale(1.1);
-      accent-color: #24597a;
-      cursor: pointer;
-    }
-
-    .route-dist {
-      font-size: 11px;
-      color: #5c6b79;
-      margin: 8px 0 8px 23px;
-    }
-
-    .route-actions {
-      display: flex;
-      gap: 6px;
-      margin-left: 23px;
-    }
-
-    .route-actions button {
-      border: 0;
-      background: #e7eef4;
-      color: #244b70;
-      border-radius: 4px;
-      padding: 6px 10px;
-      font-size: 11px;
-      cursor: pointer;
-    }
-
-    .route-actions button:hover {
-      background: #bfd8ea;
-    }
-
     /* Contenedor del mapa derecho */
     #mapjs {
       flex: 1;
       height: 100vh;
       min-width: 400px;
-    }
-
-    /* Mensaje de rutas vacías */
-    .empty {
-      font-size: 12px;
-      color: #607389;
-      padding: 12px 0;
     }
