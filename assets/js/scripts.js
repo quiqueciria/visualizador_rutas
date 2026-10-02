@@ -227,17 +227,17 @@
           return;
         }
 
+        const eyeOpenIcon = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>`;
+        const eyeClosedIcon = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>`;
+
         routes.forEach(route => {
           const div = document.createElement('div');
           div.className = `route-item group relative bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all duration-200 p-3 mb-2.5 ${!route.visible ? 'opacity-50' : ''}`;
 
           div.innerHTML = `
-            <div class="flex items-center justify-between gap-2">
-              <label class="flex items-center gap-2.5 cursor-pointer select-none flex-1 min-w-0">
-                <input type="checkbox" ${route.visible ? 'checked' : ''} class="w-4 h-4 rounded border-slate-300 text-sky-700 focus:ring-sky-500 cursor-pointer accent-sky-700">
-                <span class="w-3 h-3 rounded-full shrink-0 shadow-sm" style="background-color: ${route.color};"></span>
-                <span class="text-sm font-semibold text-slate-800 truncate" title="${route.name}">${route.name}</span>
-              </label>
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="w-3 h-3 rounded-full shrink-0 shadow-sm" style="background-color: ${route.color};"></span>
+              <span class="text-sm font-semibold text-slate-800 truncate" title="${route.name}">${route.name}</span>
             </div>
 
             <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
@@ -256,6 +256,9 @@
                   </svg>
                   <span>Ir a</span>
                 </button>
+                <button type="button" class="vis-btn inline-flex items-center justify-center p-1 ${route.visible ? 'text-sky-700 hover:text-sky-900 hover:bg-sky-50' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'} rounded-md transition-colors" title="${route.visible ? 'Ocultar ruta en el mapa' : 'Mostrar ruta en el mapa'}">
+                  ${route.visible ? eyeOpenIcon : eyeClosedIcon}
+                </button>
                 <button type="button" class="del-btn inline-flex items-center justify-center p-1 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors" title="Eliminar ruta">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -265,9 +268,13 @@
             </div>
           `;
 
-          div.querySelector('input').addEventListener('change', e => {
-            route.visible = e.target.checked;
+          const visBtn = div.querySelector('.vis-btn');
+          visBtn.addEventListener('click', () => {
+            route.visible = !route.visible;
             route.layer.setVisible(route.visible);
+            visBtn.innerHTML = route.visible ? eyeOpenIcon : eyeClosedIcon;
+            visBtn.title = route.visible ? 'Ocultar ruta en el mapa' : 'Mostrar ruta en el mapa';
+            visBtn.className = `vis-btn inline-flex items-center justify-center p-1 ${route.visible ? 'text-sky-700 hover:text-sky-900 hover:bg-sky-50' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'} rounded-md transition-colors`;
             div.classList.toggle('opacity-50', !route.visible);
           });
 
