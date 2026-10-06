@@ -16,11 +16,7 @@ jobs:
       - name: Subir archivos por FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ftp.cluster029.hosting.ovh.net
+          server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: www/visualizador_rutas/
-
-# FTP_SERVERftp.cluster029.hosting.ovh.net
-# FTP_USERNAMEuflknck
-# FTP_PASSWORDJiuogB8B
