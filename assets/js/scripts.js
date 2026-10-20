@@ -219,6 +219,12 @@
       const aboutModal = document.getElementById('aboutModal');
       const closeAboutModal = document.getElementById('closeAboutModal');
       const closeAboutModalBtn = document.getElementById('closeAboutModalBtn');
+      const routeInfoModal = document.getElementById('routeInfoModal');
+      const routeInfoTitle = document.getElementById('routeInfoTitle');
+      const routeInfoContent = document.getElementById('routeInfoContent');
+      const closeRouteInfoModal = document.getElementById('closeRouteInfoModal');
+      const closeRouteInfoModalBtn = document.getElementById('closeRouteInfoModalBtn');
+      let routeInfoReturnFocusTarget = null;
 
       const mapFilterText = document.getElementById('mapFilterText');
       const mapFilterToggle = document.getElementById('mapFilterToggle');
@@ -270,6 +276,23 @@
         if (closeAboutModalBtn) closeAboutModalBtn.addEventListener('click', closeModal);
         aboutModal.addEventListener('click', e => { if (e.target === aboutModal) closeModal(); });
         window.addEventListener('keydown', e => { if (e.key === 'Escape' && !aboutModal.classList.contains('hidden')) closeModal(); });
+      }
+
+      if (routeInfoModal) {
+        const closeRouteInfo = () => {
+          routeInfoModal.classList.add('hidden');
+          routeInfoModal.classList.remove('flex');
+          if (routeInfoReturnFocusTarget) routeInfoReturnFocusTarget.focus();
+        };
+
+        if (closeRouteInfoModal) closeRouteInfoModal.addEventListener('click', closeRouteInfo);
+        if (closeRouteInfoModalBtn) closeRouteInfoModalBtn.addEventListener('click', closeRouteInfo);
+        routeInfoModal.addEventListener('click', event => {
+          if (event.target === routeInfoModal) closeRouteInfo();
+        });
+        window.addEventListener('keydown', event => {
+          if (event.key === 'Escape' && !routeInfoModal.classList.contains('hidden')) closeRouteInfo();
+        });
       }
 
       // ================================================================
@@ -330,13 +353,14 @@
                   </svg>
                   <span>Ir a</span>
                 </button>
+                <button type="button" class="info-btn inline-flex items-center justify-center p-1 text-slate-500 hover:text-sky-800 hover:bg-sky-50 rounded transition-colors" title="Información de la ruta" aria-label="Información de ${route.name}">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4m0-4h.01"></path>
+                  </svg>
+                </button>
                 <button type="button" class="vis-btn inline-flex items-center justify-center p-1 ${route.visible ? 'text-sky-700 hover:text-sky-900 hover:bg-sky-50' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'} rounded transition-colors" title="${route.visible ? 'Ocultar ruta en el mapa' : 'Mostrar ruta en el mapa'}">
                   ${route.visible ? eyeOpenIcon : eyeClosedIcon}
-                </button>
-                <button type="button" class="del-btn inline-flex items-center justify-center p-1 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors" title="Eliminar ruta">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                  </svg>
                 </button>
               </div>
             </div>
@@ -353,10 +377,21 @@
           });
 
           div.querySelector('.zoom-btn').addEventListener('click', () => zoomToBbox(route.stats.bbox, 0.25));
-          div.querySelector('.del-btn').addEventListener('click', () => {
-            map.removeLayers(route.layer);
-            routes.delete(route.id);
-            renderList();
+          div.querySelector('.info-btn').addEventListener('click', event => {
+            const routeTemplate = Array.from(document.querySelectorAll('template[data-route-info]'))
+              .find(template => template.dataset.routeInfo === route.fileName);
+
+            routeInfoTitle.textContent = route.name;
+            routeInfoContent.replaceChildren();
+            if (routeTemplate) {
+              routeInfoContent.appendChild(routeTemplate.content.cloneNode(true));
+            } else {
+              routeInfoContent.textContent = `Aún no hay contenido para esta ruta. Añade en index.html un <template data-route-info="${route.fileName}"> con el texto o HTML que quieras mostrar.`;
+            }
+            routeInfoModal.classList.remove('hidden');
+            routeInfoModal.classList.add('flex');
+            closeRouteInfoModal.focus();
+            routeInfoReturnFocusTarget = event.currentTarget;
           });
 
           routeList.appendChild(div);
@@ -431,6 +466,7 @@
                   const id = 'route-' + (++routeCounter);
                   const route = {
                     id,
+                    fileName: filename,
                     name: parsed.name,
                     color: PALETTE[(routeCounter - 1) % PALETTE.length],
                     segments: parsed.segments,

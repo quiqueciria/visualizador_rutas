@@ -47,6 +47,7 @@
           <span>Ajustar vista</span>
         </button>
 
+        <!-- Botón para alternar entre mapa en color y blanco y negro -->
         <button id="mapFilter" class="map-filter flex-1 flex items-center justify-between px-2.5 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg shadow-sm transition-all cursor-pointer" type="button" aria-pressed="false" title="Alternar entre mapa en color y blanco y negro">
           <span class="flex items-center gap-1.5 min-w-0">
             <svg class="w-3.5 h-3.5 text-slate-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -104,6 +105,25 @@
     <div id="mapjs" class="m-container"></div>
   </div>
 
+  <div id="routeInfoModal" class="fixed inset-0 z-[2000] hidden items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4" role="dialog" aria-modal="true" aria-labelledby="routeInfoTitle">
+    <div class="relative w-full max-w-lg bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-slate-100 bg-slate-50">
+        <h3 id="routeInfoTitle" class="text-sm font-bold text-slate-800"></h3>
+        <button id="closeRouteInfoModal" type="button" class="text-slate-400 hover:text-slate-600 hover:bg-slate-200/60 p-1 rounded-md transition-colors cursor-pointer" title="Cerrar" aria-label="Cerrar información de la ruta">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div id="routeInfoContent" class="max-h-[70vh] overflow-y-auto p-4 text-xs text-slate-600 leading-relaxed"></div>
+      <div class="flex items-center justify-end px-4 py-2.5 border-t border-slate-100 bg-slate-50">
+        <button id="closeRouteInfoModalBtn" type="button" class="px-3.5 py-1.5 text-xs font-semibold text-white bg-sky-700 hover:bg-sky-800 rounded-lg transition-colors cursor-pointer">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal Pop-up: Acerca de -->
   <div id="aboutModal" class="fixed inset-0 z-[2000] hidden items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
     <div class="relative w-full max-w-md bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden transform transition-all">
@@ -151,7 +171,7 @@
   <script type="text/javascript">
         window.mapjs = IDEE.map({
             container: 'mapjs',
-            controls: ['attributions', 'location*true*false',],
+            controls: [],
           center: [-412305.13, 4926696.67],
           zoom: 7,
         });
