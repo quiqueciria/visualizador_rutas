@@ -1,14 +1,79 @@
-Visualizador cartográfico de rutas en bicicleta
+# Visualizador de rutas GPX
 
-### Información personalizada de cada ruta
+Aplicación web para visualizar rutas GPX sobre un mapa interactivo. Muestra las rutas en el mapa y permite consultar sus datos básicos y cambiar la vista de cartografía. Está pensada para publicarse como una web estática.
 
-Cada ruta tiene un botón de información. Para mostrar contenido en su modal, añade un elemento `<template>` en `index.html` usando como `data-route-info` el nombre exacto del archivo GPX:
+## Funcionalidades
+
+- Carga las rutas GPX indicadas en `gpx/routes.json`.
+- Dibuja cada ruta con un color distinto.
+- Calcula la distancia aproximada y, cuando el GPX incluye elevaciones, el desnivel positivo acumulado.
+- Permite centrar el mapa en una ruta, mostrarla u ocultarla y ajustar la vista a las rutas cargadas.
+- Permite ordenar la lista por distancia o desnivel.
+- Incluye cartografía base del IGN y OpenStreetMap, además de un filtro para ver el mapa en color o en blanco y negro.
+- Ofrece un modal de información por ruta, cuyo contenido se puede personalizar con HTML.
+- Adapta la interfaz a pantallas móviles.
+
+## Cómo está hecha
+
+El proyecto es una aplicación de frontend sin backend ni proceso de compilación. Está implementada con HTML, CSS y JavaScript, y utiliza la API-IDEE para el mapa. Tailwind CSS se carga desde CDN. Por ello, se necesita conexión a Internet para cargar las librerías externas y los servicios cartográficos.
+
+## Ejecución
+
+Clona o descarga el repositorio y sirve la carpeta como un sitio web estático. Por ejemplo, si tienes Python instalado:
+
+```bash
+python -m http.server 8000
+```
+
+Abre <http://localhost:8000> en el navegador. También puedes publicar los archivos del proyecto en un servicio de alojamiento de webs estáticas.
+
+Es necesario utilizar un servidor HTTP —local o remoto— porque el visor obtiene `gpx/routes.json` y los archivos GPX mediante `fetch`. Abrir `index.html` directamente como un archivo local puede impedir que se carguen las rutas.
+
+## Añadir o quitar rutas
+
+1. Copia el archivo `.gpx` en la carpeta `gpx/`.
+2. Añade su nombre, respetando mayúsculas, minúsculas y extensión, a la lista de `gpx/routes.json`.
+3. Vuelve a cargar el visor.
+
+Por ejemplo:
+
+```json
+[
+  "A_Yebes.gpx",
+  "Mi_nueva_ruta.gpx"
+]
+```
+
+El nombre que aparece en el visor se obtiene del nombre de la ruta o del track dentro del GPX. Si el archivo no incluye ninguno, se utiliza su nombre de archivo.
+
+## Información personalizada para cada ruta
+
+Para mostrar una descripción, imágenes u otro HTML, añade un elemento `<template>` en `index.html`. El atributo `data-route-info` debe coincidir exactamente con el nombre del archivo GPX:
 
 ```html
 <template data-route-info="A_Yebes.gpx">
-  <p>Texto descriptivo de la ruta.</p>
-  <img src="assets/img/imagen-ruta.jpg" alt="Descripción de la imagen">
+  <p>Descripción de la ruta.</p>
+  <img src="assets/img/imagen-ruta.jpg" alt="Paisaje del recorrido">
 </template>
 ```
 
-Dentro del elemento puedes incluir texto, imágenes y otro HTML. Las imágenes se ajustan al ancho del modal. Si no existe una plantilla para una ruta, el modal indica cómo añadirla.
+El contenido se muestra al pulsar el botón de información de esa ruta. Las imágenes se ajustan al ancho del modal. Si no se ha definido una plantilla, el modal indica cómo añadirla.
+
+## Estructura del proyecto
+
+```text
+.
+├── index.html          # Estructura de la aplicación y configuración del mapa
+├── assets/
+│   ├── css/styles.css  # Estilos y adaptación a móviles
+│   ├── img/            # Imágenes de la interfaz y contenido
+│   ├── js/scripts.js   # Carga de GPX, cálculos y controles
+│   └── themes/         # Configuración de temas
+└── gpx/
+    ├── routes.json     # Lista de archivos GPX que se mostrarán
+    └── *.gpx            # Tracks y rutas
+```
+
+## Cartografía y atribuciones
+
+El mapa y las capas utilizan la API-IDEE y servicios cartográficos del Instituto Geográfico Nacional (IGN), así como teselas de OpenStreetMap. Su carga depende de la disponibilidad de esos servicios y de una conexión a Internet. Al publicar o redistribuir el visor, conserva las atribuciones que muestran los proveedores y consulta las condiciones de uso aplicables a cada servicio.
