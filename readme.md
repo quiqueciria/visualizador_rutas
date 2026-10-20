@@ -2,6 +2,10 @@
 
 Aplicación web para visualizar rutas GPX sobre un mapa interactivo. Muestra las rutas en el mapa y permite consultar sus datos básicos y cambiar la vista de cartografía. Está pensada para publicarse como una web estática.
 
+<img height="411" alt="imagen" src="https://github.com/user-attachments/assets/41882673-7317-4460-a1b3-3a4cbcf02f2e" />
+
+
+
 ## Funcionalidades
 
 - Carga las rutas GPX indicadas en `gpx/routes.json`.
