@@ -1,6 +1,6 @@
 # Visualizador de rutas GPX
 
-Aplicación web para visualizar rutas GPX sobre un mapa interactivo. Muestra las rutas en el mapa y permite consultar sus datos básicos y cambiar la vista de cartografía. Está pensada para publicarse como una web estática.
+Map Route es una aplicación web para visualizar rutas GPX sobre un mapa interactivo. Muestra las rutas en el mapa y permite consultar sus datos básicos y cambiar la vista de la cartografía. Está pensada para publicarse como una web estática de forma ligera.
 
 <img height="411" alt="imagen" src="https://github.com/user-attachments/assets/41882673-7317-4460-a1b3-3a4cbcf02f2e" />
 
@@ -10,16 +10,16 @@ Aplicación web para visualizar rutas GPX sobre un mapa interactivo. Muestra las
 
 - Carga las rutas GPX indicadas en `gpx/routes.json`.
 - Dibuja cada ruta con un color distinto.
-- Calcula la distancia aproximada y, cuando el GPX incluye elevaciones, el desnivel positivo acumulado.
+- Mustra la distancia y, cuando el GPX incluye elevaciones, el desnivel positivo acumulado.
 - Permite centrar el mapa en una ruta, mostrarla u ocultarla y ajustar la vista a las rutas cargadas.
 - Permite ordenar la lista por distancia o desnivel.
 - Incluye cartografía base del IGN y OpenStreetMap, además de un filtro para ver el mapa en color o en blanco y negro.
 - Ofrece un modal de información por ruta, cuyo contenido se puede personalizar con HTML.
-- Adapta la interfaz a pantallas móviles.
+- Adapta la interfaz a pantallas móviles (BETA).
 
 ## Cómo está hecha
 
-El proyecto es una aplicación de frontend sin backend ni proceso de compilación. Está implementada con HTML, CSS y JavaScript, y utiliza la API-IDEE para el mapa. Tailwind CSS se carga desde CDN. Por ello, se necesita conexión a Internet para cargar las librerías externas y los servicios cartográficos.
+El proyecto es una aplicación de frontend sin backend ni proceso de compilación. Está implementada con HTML, CSS y JavaScript, y utiliza la [https://github.com/Desarrollos-IDEE/API-IDEE](API-IDEE) para construir el visualizador. Tailwind CSS se carga desde CDN.
 
 ## Ejecución
 
@@ -29,7 +29,7 @@ Clona o descarga el repositorio y sirve la carpeta como un sitio web estático. 
 python3 -m http.server 8000
 ```
 
-Abre <http://localhost:8000> en el navegador. También puedes publicar los archivos del proyecto en un servicio de alojamiento de webs estáticas.
+Abre <http://localhost:8000> en el navegador de forma local. También puedes publicar los archivos del proyecto en un servicio de alojamiento de webs estáticas.
 
 Es necesario utilizar un servidor HTTP —local o remoto— porque el visor obtiene `gpx/routes.json` y los archivos GPX mediante `fetch`. Abrir `index.html` directamente como un archivo local puede impedir que se carguen las rutas.
 
@@ -43,8 +43,8 @@ Por ejemplo:
 
 ```json
 [
-  "A_Yebes.gpx",
-  "Mi_nueva_ruta.gpx"
+  "route.gpx",
+  "route_2.gpx"
 ]
 ```
 
@@ -55,13 +55,13 @@ El nombre que aparece en el visor se obtiene del nombre de la ruta o del track d
 Para mostrar una descripción, imágenes u otro HTML, añade un elemento `<template>` en `index.html`. El atributo `data-route-info` debe coincidir exactamente con el nombre del archivo GPX:
 
 ```html
-<template data-route-info="A_Yebes.gpx">
+<template data-route-info="route.gpx">
   <p>Descripción de la ruta.</p>
   <img src="assets/img/imagen-ruta.jpg" alt="Paisaje del recorrido">
 </template>
 ```
 
-El contenido se muestra al pulsar el botón de información de esa ruta. Las imágenes se ajustan al ancho del modal. Si no se ha definido una plantilla, el modal indica cómo añadirla.
+El contenido se muestra al pulsar el icono de info de esa ruta. Las imágenes se ajustan al ancho del modal. Si no se ha definido una plantilla, el modal indica cómo añadirla.
 
 ## Estructura del proyecto
 
@@ -80,4 +80,4 @@ El contenido se muestra al pulsar el botón de información de esa ruta. Las im�
 
 ## Cartografía y atribuciones
 
-El mapa y las capas utilizan la API-IDEE y servicios cartográficos del Instituto Geográfico Nacional (IGN), así como teselas de OpenStreetMap. Su carga depende de la disponibilidad de esos servicios y de una conexión a Internet. Al publicar o redistribuir el visor, conserva las atribuciones que muestran los proveedores y consulta las condiciones de uso aplicables a cada servicio.
+El mapa y las capas utilizan la [https://plataforma.idee.es/idee-api](API-IDEE) y servicios cartográficos del [https://www.ign.es/web/ign/portal](Instituto Geográfico Nacional), así como teselas de [https://www.openstreetmap.org/](OpenStreetMap). Su carga depende de la disponibilidad de esos servicios y de una conexión a Internet. Al publicar o redistribuir el visor, conserva las atribuciones que muestran los proveedores y consulta las condiciones de uso aplicables a cada servicio.
