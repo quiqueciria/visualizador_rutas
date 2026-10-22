@@ -61,7 +61,7 @@ Para mostrar una descripción, imágenes u otro HTML, añade un elemento `<templ
 </template>
 ```
 
-El contenido se muestra al pulsar el icono de info de esa ruta. Las imágenes se ajustan al ancho del modal. Si no se ha definido una plantilla, el modal indica cómo añadirla.
+El contenido se muestra al pulsar el botón de información de esa ruta. Las imágenes se ajustan al ancho del modal. Si no se ha definido una plantilla, el modal indica cómo añadirla.
 
 ## Estructura del proyecto
 
@@ -80,4 +80,4 @@ El contenido se muestra al pulsar el icono de info de esa ruta. Las imágenes se
 
 ## Cartografía y atribuciones
 
-El mapa y las capas utilizan la [https://plataforma.idee.es/idee-api](API-IDEE) y servicios cartográficos del [https://www.ign.es/web/ign/portal](Instituto Geográfico Nacional), así como teselas de [https://www.openstreetmap.org/](OpenStreetMap). Su carga depende de la disponibilidad de esos servicios y de una conexión a Internet. Al publicar o redistribuir el visor, conserva las atribuciones que muestran los proveedores y consulta las condiciones de uso aplicables a cada servicio.
+El mapa y las capas utilizan la API-IDEE y servicios cartográficos del Instituto Geográfico Nacional (IGN), así como teselas de OpenStreetMap. Su carga depende de la disponibilidad de esos servicios y de una conexión a Internet. Al publicar o redistribuir el visor, conserva las atribuciones que muestran los proveedores y consulta las condiciones de uso aplicables a cada servicio.
