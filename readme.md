@@ -80,4 +80,4 @@ El contenido se muestra al pulsar el botón de información de esa ruta. Las im�
 
 ## Cartografía y atribuciones
 
-El mapa y las capas utilizan la [https://plataforma.idee.es/idee-api](API-IDEE) y servicios cartográficos del [https://www.ign.es/web/ign/portal](Instituto Geográfico Nacional), así como teselas de [https://www.openstreetmap.org/](OpenStreetMap). Su carga depende de la disponibilidad de esos servicios y de una conexión a Internet. Al publicar o redistribuir el visor, conserva las atribuciones que muestran los proveedores y consulta las condiciones de uso aplicables a cada servicio.
+El mapa y las capas utilizan la [API-IDEE](https://plataforma.idee.es/idee-api) y servicios cartográficos del [Instituto Geográfico Nacional](https://www.ign.es/web/ign/portal), así como teselas de [OpenStreetMap](https://www.openstreetmap.org/). Su carga depende de la disponibilidad de esos servicios y de una conexión a Internet. Al publicar o redistribuir el visor, conserva las atribuciones que muestran los proveedores y consulta las condiciones de uso aplicables a cada servicio.
