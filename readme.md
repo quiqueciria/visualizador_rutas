@@ -26,7 +26,7 @@ El proyecto es una aplicación de frontend sin backend ni proceso de compilació
 Clona o descarga el repositorio y sirve la carpeta como un sitio web estático. Por ejemplo, si tienes Python instalado:
 
 ```bash
-python -m http.server 8000
+python3 -m http.server 8000
 ```
 
 Abre <http://localhost:8000> en el navegador. También puedes publicar los archivos del proyecto en un servicio de alojamiento de webs estáticas.
