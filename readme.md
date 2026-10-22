@@ -19,7 +19,7 @@ Map Route es una aplicación web para visualizar rutas GPX sobre un mapa interac
 
 ## Cómo está hecha
 
-El proyecto es una aplicación de frontend sin backend ni proceso de compilación. Está implementada con HTML, CSS y JavaScript, y utiliza la [https://github.com/Desarrollos-IDEE/API-IDEE](API-IDEE) para construir el visualizador. Tailwind CSS se carga desde CDN.
+El proyecto es una aplicación de frontend sin backend ni proceso de compilación. Está implementada con HTML, CSS y JavaScript, y utiliza la [API-IDEE](https://github.com/Desarrollos-IDEE/API-IDEE) para construir el visualizador. Tailwind CSS se carga desde CDN.
 
 ## Ejecución
 
@@ -80,4 +80,4 @@ El contenido se muestra al pulsar el botón de información de esa ruta. Las im�
 
 ## Cartografía y atribuciones
 
-El mapa y las capas utilizan la API-IDEE y servicios cartográficos del Instituto Geográfico Nacional (IGN), así como teselas de OpenStreetMap. Su carga depende de la disponibilidad de esos servicios y de una conexión a Internet. Al publicar o redistribuir el visor, conserva las atribuciones que muestran los proveedores y consulta las condiciones de uso aplicables a cada servicio.
+El mapa y las capas utilizan la [https://plataforma.idee.es/idee-api](API-IDEE) y servicios cartográficos del [https://www.ign.es/web/ign/portal](Instituto Geográfico Nacional), así como teselas de [https://www.openstreetmap.org/](OpenStreetMap). Su carga depende de la disponibilidad de esos servicios y de una conexión a Internet. Al publicar o redistribuir el visor, conserva las atribuciones que muestran los proveedores y consulta las condiciones de uso aplicables a cada servicio.
